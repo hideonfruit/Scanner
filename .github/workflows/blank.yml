@@ -1,6 +1,6 @@
 name: Autograding Tests
 'on':
-- push
+- workflow_dispatch
 - repository_dispatch
 permissions:
   checks: write
@@ -13,16 +13,17 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: Parser Tests
-      id: parser-tests
+    - name: Scanner Test
+      id: scanner-test
       uses: classroom-resources/autograding-command-grader@v1
       with:
-        test-name: Parser Tests
+        test-name: Scanner Test
+        setup-command: ''
         command: gradle test
         timeout: 10
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
-        PARSER-TESTS_RESULTS: "${{steps.parser-tests.outputs.result}}"
+        SCANNER-TEST_RESULTS: "${{steps.scanner-test.outputs.result}}"
       with:
-        runners: parser-tests
+        runners: scanner-test
